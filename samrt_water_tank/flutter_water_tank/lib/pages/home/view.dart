@@ -9,124 +9,203 @@ class HomePage extends GetView<HomeController> {
 
   // 主视图
   Widget _buildView(HomeController _) {
-    return Container(
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(14))),
-      margin: const EdgeInsets.all(18),
-      padding: const EdgeInsets.all(18),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.check_circle_outline_outlined,
-                    size: 20,
-                    color: Color(0xff808080),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text('水温'),
-                ],
-              ),
-            ),
-            const Divider(
-              height: 0,
-              color: Color(0xffcccccc),
-            ),
-            SizedBox(
-              height: 60,
-              width: Get.width,
-              child: Row(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          Container(
+              color: Colors.white,
+              padding: const EdgeInsets.all(10),
+              child: Column(
                 children: [
-                  const Expanded(
-                    child: Text(
-                      '含氧量控制',
-                      style: TextStyle(color: Color(0xff212121), fontSize: 14),
+                  const Align(
+                    child: Text('Temperature Control'),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text('Current temperature（℃）：'),
+                        Text('55.3℃'),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    width: 120,
-                    child: TDLTextField(
-                      controller: _.oxygen,
-                      hintText: '当前含氧量',
-                      textAlign: TextAlign.end,
-                      hintColor: const Color(0xffA6A6A6),
-                      inputType: TextInputType.number,
-                      inputAction: TextInputAction.done,
-                      onEditingComplete: () {
-                        //这里写填入的水平 发送蓝牙指令
-                      },
-                      isSystem: true,
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Set temperature（℃）：'),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: const Color(0xffcccccc),
+                                      width: 1)),
+                              width: 60,
+                              height: 24,
+                              child: TDLTextField(
+                                controller: _.minTemperature,
+                                hintText: 'e.g. 23.5',
+                                contentPadding:
+                                    const EdgeInsets.only(top: 3, left: 3),
+                                hintColor: const Color(0xffA6A6A6),
+                                inputType: TextInputType.number,
+                                inputAction: TextInputAction.done,
+                                onEditingComplete: () {
+                                  //这里写填入的水平 发送蓝牙指令
+                                },
+                                isSystem: true,
+                              ),
+                            ),
+                            const Text('一'),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: const Color(0xffcccccc),
+                                      width: 1)),
+                              width: 60,
+                              height: 24,
+                              child: TDLTextField(
+                                controller: _.maxTemperature,
+                                hintText: 'e.g. 23.5',
+                                contentPadding:
+                                    const EdgeInsets.only(top: 3, left: 3),
+                                hintColor: const Color(0xffA6A6A6),
+                                inputType: TextInputType.number,
+                                inputAction: TextInputAction.done,
+                                onEditingComplete: () {
+                                  //这里写填入的水平 发送蓝牙指令
+                                },
+                                isSystem: true,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _.setTemperature,
+                    child: const Text('Confirm'),
                   )
                 ],
-              ),
-            ),
-            const Divider(
-              height: 0,
-              color: Color(0xffcccccc),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.check_circle_outline_outlined,
-                    size: 20,
-                    color: Color(0xff808080),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text('水温'),
-                ],
-              ),
-            ),
-            const Divider(
-              height: 0,
-              color: Color(0xffcccccc),
-            ),
-            SizedBox(
-              height: 60,
-              width: Get.width,
-              child: Row(
+              )),
+          const SizedBox(height: 10),
+          Container(
+              color: Colors.white,
+              padding: const EdgeInsets.all(10),
+              child: Column(
                 children: [
-                  const Expanded(
-                    child: Text(
-                      '当前水温',
-                      style: TextStyle(color: Color(0xff212121), fontSize: 14),
+                  const Align(
+                    child: Text('Airpump Control'),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text('Current operating mode'),
+                        Text('1 mode'),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    width: 120,
-                    child: TDLTextField(
-                      controller: _.waterTemperature,
-                      hintText: '默认的水温',
-                      textAlign: TextAlign.end,
-                      hintColor: const Color(0xffA6A6A6),
-                      inputType: TextInputType.number,
-                      inputAction: TextInputAction.send,
-                      onEditingComplete: () {
-                        //这里写填入的水平 发送蓝牙指令
-                        debugPrint(_.waterTemperature.text);
-                      },
-                      isSystem: true,
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Set temperature（℃）：'),
+                        const SizedBox(width: 40),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: const Color(0xffcccccc), width: 1)),
+                            height: 24,
+                            child: TDLTextField(
+                              controller: _.airpump,
+                              hintText: 'e.g. 0,1,2,3,4',
+                              contentPadding:
+                                  const EdgeInsets.only(top: 3, left: 3),
+                              hintColor: const Color(0xffA6A6A6),
+                              inputType: TextInputType.number,
+                              inputAction: TextInputAction.done,
+                              isSystem: true,
+                            ),
+                          ),
+                        )
+                      ],
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _.setAirpump,
+                    child: const Text('Confirm'),
                   )
                 ],
-              ),
-            ),
-            const Divider(
-              height: 0,
-              color: Color(0xffcccccc),
-            ),
-          ],
-        ),
+              )),
+          const SizedBox(height: 10),
+          Container(
+              color: Colors.white,
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  const Align(
+                    child: Text('Waterpump Control'),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text('Current operating mode'),
+                        Text('1 mode'),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Set temperature（℃）：'),
+                        const SizedBox(width: 40),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: const Color(0xffcccccc), width: 1)),
+                            height: 24,
+                            child: TDLTextField(
+                              controller: _.waterpump,
+                              hintText: 'e.g. 0,1,2,3,4',
+                              contentPadding:
+                                  const EdgeInsets.only(top: 3, left: 3),
+                              hintColor: const Color(0xffA6A6A6),
+                              inputType: TextInputType.number,
+                              inputAction: TextInputAction.done,
+                              isSystem: true,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _.setWaterpump,
+                    child: const Text('Confirm'),
+                  )
+                ],
+              )),
+          const SizedBox(
+            height: 80,
+          )
+        ],
       ),
     );
   }
@@ -140,7 +219,7 @@ class HomePage extends GetView<HomeController> {
         return Scaffold(
           backgroundColor: const Color(0xfff4f4fa),
           appBar: AppBar(
-            title: const Text("设备控制页面",
+            title: const Text("Device Control",
                 style: TextStyle(color: Color(0xff212121), fontSize: 14)),
             elevation: 0,
             centerTitle: true,

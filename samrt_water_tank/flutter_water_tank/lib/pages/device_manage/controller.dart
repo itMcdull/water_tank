@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_water_tank/pages/ble_scan/index.dart';
 import 'package:flutter_water_tank/utils/ble.device.dart';
@@ -285,7 +286,7 @@ class DeviceManageController extends GetxController
       //refreshDeviceList(storageList);
       await Common.setDevices(deviceList); //更新缓存
       deviceList.refresh();
-      Loading.toast("${deviceList[index].displayName}：${"离线".tr}");
+      BotToast.showText(text: "${deviceList[index].displayName}：${"离线".tr}");
       //Loading.toast("设备：${deviceList[index].displayName}断开连接！");
     }
     //有数据的情况下才会自动扫描

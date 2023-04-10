@@ -113,7 +113,7 @@ class BleUtils {
     debugPrint("开始扫描BLE蓝牙设备...");
     _bleDevices.clear();
     _scanSubscription =
-        _ble!.scanForDevices(withServices: []).listen((device) async {
+        _ble!.scanForDevices(withServices: uuids).listen((device) async {
       _scanningCount += 1;
       //扫描600次
       debugPrint("第$_scanningCount次扫描...");

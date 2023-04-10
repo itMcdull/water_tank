@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_water_tank/utils/ble.device.dart';
 import 'package:flutter_water_tank/utils/ble_callback.dart';
 import 'package:flutter_water_tank/utils/ble_device_bean.dart';
@@ -46,10 +47,10 @@ class BleScanController extends GetxController implements BleCallBack {
             d.discoveredDevice.id == bleDeviceList[index].discoveredDevice.id);
     if (knownDeviceIndex >= 0 && bleDeviceList[index].isConnected) {
       //Loading.dismiss();
-         Loading.toast("当前设备已连接".tr);
+      BotToast.showText(text: "当前设备已连接".tr);
     } else {
       //连接设备
-      Loading.show("正在连接...".tr);
+      BotToast.showLoading();
       BleUtils.getInstance().connectBle(bleDeviceList[index]);
     }
   }
@@ -57,11 +58,12 @@ class BleScanController extends GetxController implements BleCallBack {
   @override
   void connectFailListener(BleDevice bleDevice) {
     // Loading.toast('连接超时');
-     Loading.dismiss();
+    BotToast.cleanAll();
   }
 
   @override
   void connectListener(BleDevice bleDevice) {
+    BotToast.showText(text: "连接设备成功".tr);
     String name =
         DataUtils.emptyStringToReplace(bleDevice.discoveredDevice.name);
     //添加设备到本地缓存
@@ -73,8 +75,7 @@ class BleScanController extends GetxController implements BleCallBack {
       enabled: false,
       isChecked: false,
     ));
-     Loading.toast("连接设备成功".tr);
-    //Loading.dismiss();
+    BotToast.cleanAll();
     Get.back(result: bleDevice);
   }
 

@@ -1,5 +1,5 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_water_tank/pages/device_manage/index.dart';
 import 'package:flutter_water_tank/utils/ble_service.dart';
 import 'package:flutter_water_tank/utils/instance.dart';
@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final botToastBuilder = BotToastInit();
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -30,8 +31,34 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
+
+      navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
+
       navigatorKey: Instances.navigatorKey,
-      builder: EasyLoading.init(),
+
+      //     builder: (context, child) {
+      //  EasyLoading.init();  //do something
+      //   child = botToastBuilder(context,child);
+      //   return child;
+      // },
+      builder: (context, child) {
+        child = GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              FocusManager.instance.primaryFocus!.unfocus();
+            }
+          },
+          child: MediaQuery(
+            //设置文字大小不随系统设置改变
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            child: botToastBuilder(context, child),
+          ),
+        );
+
+        return child;
+      },
       home: const DeviceManagePage(),
     );
   }
